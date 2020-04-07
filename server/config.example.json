@@ -1,0 +1,8 @@
+{
+    "mqtt_ServerIp": "mqtt://test.mosquitto.org",
+    "mqtt_channelId": "MyAwesomeMqttChannel",
+    "db_adress": "adress",
+    "db_port": "port",
+    "db_user": "user",
+    "db_database": "database"
+}
