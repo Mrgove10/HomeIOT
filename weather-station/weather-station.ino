@@ -25,7 +25,6 @@ Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, -1);
 // Network details
 const char *ssid = "Livebox-EC80";
 const char *password = "gWbj6RNW6n3mCwwD3A";
-const char *host = "http://192.168.1.4:81/?";
 
 //Varriables
 float humidity, pressure, temperature, altitude;
