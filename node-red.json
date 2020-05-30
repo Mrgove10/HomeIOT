@@ -1,0 +1,523 @@
+[
+    {
+        "id": "a143cb00.2c2da",
+        "type": "tab",
+        "label": "Main Flow",
+        "disabled": false,
+        "info": ""
+    },
+    {
+        "id": "efe2f1e8.fc91c",
+        "type": "mqtt in",
+        "z": "a143cb00.2c2da",
+        "name": "Receive MQTT Message",
+        "topic": "govie-weather-station-1344-in",
+        "qos": "2",
+        "datatype": "json",
+        "broker": "e3c4722.40bd81",
+        "x": 310,
+        "y": 200,
+        "wires": [
+            [
+                "ad5a2252.e236e8",
+                "3db90ed3.8eb62a",
+                "81536f5c.26d9e8",
+                "188ed67f.b41862"
+            ]
+        ]
+    },
+    {
+        "id": "ad5a2252.e236e8",
+        "type": "debug",
+        "z": "a143cb00.2c2da",
+        "name": "",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "x": 790,
+        "y": 140,
+        "wires": []
+    },
+    {
+        "id": "675208b7.3f3fd8",
+        "type": "mysql",
+        "z": "a143cb00.2c2da",
+        "mydb": "ad2f5ab0.06d6f",
+        "name": "Mysql Database",
+        "x": 1200,
+        "y": 320,
+        "wires": [
+            [
+                "3d09b42e.9a07e4"
+            ]
+        ]
+    },
+    {
+        "id": "c11bc4b4.ec23a",
+        "type": "function",
+        "z": "a143cb00.2c2da",
+        "name": "Format Data",
+        "func": "var currentdate = new Date().toISOString().slice(0, 19).replace('T', ' ');\nconsole.log(msg.file);\nvar pl = msg.payload;\n    var newMsg = {\n        payload: [\n            currentdate, \n            pl.p_own,\n            pl.t_in,\n            pl.h_in,\n            pl.t_own,\n            pl.h_own\n        ],\n        topic:\"INSERT INTO Stats (Date, Pressure, InsideTemp, InsideHumidity, OutsideTemp, OutsideHumidity) VALUES (?,?,?,?,?,?)\"\n    };\nreturn newMsg",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 990,
+        "y": 320,
+        "wires": [
+            [
+                "675208b7.3f3fd8"
+            ]
+        ]
+    },
+    {
+        "id": "3d09b42e.9a07e4",
+        "type": "debug",
+        "z": "a143cb00.2c2da",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "x": 1410,
+        "y": 320,
+        "wires": []
+    },
+    {
+        "id": "beba7005.8b09e",
+        "type": "catch",
+        "z": "a143cb00.2c2da",
+        "name": "",
+        "scope": null,
+        "uncaught": false,
+        "x": 1120,
+        "y": 500,
+        "wires": [
+            [
+                "7a9c68.e14d9398"
+            ]
+        ]
+    },
+    {
+        "id": "7a9c68.e14d9398",
+        "type": "debug",
+        "z": "a143cb00.2c2da",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "x": 1270,
+        "y": 500,
+        "wires": []
+    },
+    {
+        "id": "a13791d6.3a27",
+        "type": "openweathermap",
+        "z": "a143cb00.2c2da",
+        "name": "",
+        "wtype": "current",
+        "lon": "5.777836",
+        "lat": "45.185713",
+        "city": "",
+        "country": "",
+        "language": "en",
+        "x": 490,
+        "y": 480,
+        "wires": [
+            [
+                "d03c9035.f972a",
+                "acdec7f5.f76da8"
+            ]
+        ]
+    },
+    {
+        "id": "dfa2c1b1.a91c7",
+        "type": "e-mail",
+        "z": "a143cb00.2c2da",
+        "server": "smtp.gmail.com",
+        "port": "465",
+        "secure": true,
+        "tls": true,
+        "name": "richardadrien0@gmail.com",
+        "dname": "Send Mail",
+        "x": 1340,
+        "y": 200,
+        "wires": []
+    },
+    {
+        "id": "1f13e7d8.34252",
+        "type": "function",
+        "z": "a143cb00.2c2da",
+        "name": "Format Mail",
+        "func": "var newMsg = {\n    topic :\"Il Fait plus de 28°C\",\n    payload : \"Il Fait plus de 28°C\"\n}\nreturn newMsg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 1190,
+        "y": 120,
+        "wires": [
+            [
+                "a419009b.b568b"
+            ]
+        ]
+    },
+    {
+        "id": "a419009b.b568b",
+        "type": "e-mail",
+        "z": "a143cb00.2c2da",
+        "server": "smtp.gmail.com",
+        "port": "465",
+        "secure": true,
+        "tls": true,
+        "name": "richardadrien0@gmail.com",
+        "dname": "Send Mail",
+        "x": 1340,
+        "y": 120,
+        "wires": []
+    },
+    {
+        "id": "2ef67e5e.5f1dda",
+        "type": "comment",
+        "z": "a143cb00.2c2da",
+        "name": "Usefull links",
+        "info": "https://nodered.org/docs/user-guide/writing-functions\n\nhttps://flows.nodered.org/node/node-red-node-email\n\nhttps://flows.nodered.org/node/node-red-node-mysql\n\nhttps://flows.nodered.org/node/node-red-node-openweathermap",
+        "x": 270,
+        "y": 120,
+        "wires": []
+    },
+    {
+        "id": "c2c7beae.9534f8",
+        "type": "function",
+        "z": "a143cb00.2c2da",
+        "name": "Format Mail",
+        "func": "var newMsg = {\n    topic :\"Il Fait moins de 15°C\",\n    payload : \"Il Fait moins de 15°C\"\n}\nreturn newMsg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 1190,
+        "y": 200,
+        "wires": [
+            [
+                "dfa2c1b1.a91c7"
+            ]
+        ]
+    },
+    {
+        "id": "d03c9035.f972a",
+        "type": "function",
+        "z": "a143cb00.2c2da",
+        "name": "Format Data",
+        "func": "var newMsg = { \n    payload: {\n        p_own : msg.payload.pressure,\n        t_own : msg.payload.tempc,\n        h_own : msg.payload.humidity \n    }\n};\nreturn newMsg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 710,
+        "y": 440,
+        "wires": [
+            [
+                "8d775cb7.b9758"
+            ]
+        ]
+    },
+    {
+        "id": "acdec7f5.f76da8",
+        "type": "debug",
+        "z": "a143cb00.2c2da",
+        "name": "",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "x": 710,
+        "y": 520,
+        "wires": []
+    },
+    {
+        "id": "8d775cb7.b9758",
+        "type": "file",
+        "z": "a143cb00.2c2da",
+        "name": "Write File",
+        "filename": "/home/adrien/.node-red/OpenWeatherMapData.json",
+        "appendNewline": false,
+        "createDir": false,
+        "overwriteFile": "true",
+        "encoding": "none",
+        "x": 880,
+        "y": 440,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "e38842c5.bf742",
+        "type": "inject",
+        "z": "a143cb00.2c2da",
+        "name": "",
+        "topic": "",
+        "payload": "true",
+        "payloadType": "bool",
+        "repeat": "120",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "x": 290,
+        "y": 480,
+        "wires": [
+            [
+                "a13791d6.3a27"
+            ]
+        ]
+    },
+    {
+        "id": "3db90ed3.8eb62a",
+        "type": "file in",
+        "z": "a143cb00.2c2da",
+        "name": "Read File",
+        "filename": "/home/adrien/.node-red/OpenWeatherMapData.json",
+        "format": "utf8",
+        "chunk": false,
+        "sendError": false,
+        "encoding": "none",
+        "x": 480,
+        "y": 320,
+        "wires": [
+            [
+                "ad012f17.931778"
+            ]
+        ]
+    },
+    {
+        "id": "ad012f17.931778",
+        "type": "json",
+        "z": "a143cb00.2c2da",
+        "name": "",
+        "property": "payload",
+        "action": "obj",
+        "pretty": false,
+        "x": 610,
+        "y": 320,
+        "wires": [
+            [
+                "188ed67f.b41862"
+            ]
+        ]
+    },
+    {
+        "id": "8fb3381f.317318",
+        "type": "rising-edge",
+        "z": "a143cb00.2c2da",
+        "name": "",
+        "threshold": "28",
+        "x": 1030,
+        "y": 160,
+        "wires": [
+            [
+                "7dbe0ef9.0aa2f"
+            ]
+        ]
+    },
+    {
+        "id": "c2905d58.dd2c3",
+        "type": "falling-edge",
+        "z": "a143cb00.2c2da",
+        "name": "",
+        "threshold": "15",
+        "x": 1030,
+        "y": 240,
+        "wires": [
+            [
+                "fc323411.5b1398"
+            ]
+        ]
+    },
+    {
+        "id": "81536f5c.26d9e8",
+        "type": "function",
+        "z": "a143cb00.2c2da",
+        "name": "get Temperature",
+        "func": "msg.payload = msg.payload.t_in;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 810,
+        "y": 200,
+        "wires": [
+            [
+                "8fb3381f.317318",
+                "c2905d58.dd2c3"
+            ]
+        ]
+    },
+    {
+        "id": "9d4426e4.86a31",
+        "type": "usbcamera",
+        "z": "a143cb00.2c2da",
+        "filemode": "1",
+        "filename": "image01.jpg",
+        "filedefpath": "1",
+        "filepath": "/home/adrien/.node-red/photos",
+        "fileformat": "jpeg",
+        "resolution": "2",
+        "name": "",
+        "x": 470,
+        "y": 660,
+        "wires": [
+            [
+                "ae1e389b.7d3a28"
+            ]
+        ]
+    },
+    {
+        "id": "3eea9e7f.dc7f42",
+        "type": "inject",
+        "z": "a143cb00.2c2da",
+        "name": "",
+        "topic": "",
+        "payload": "true",
+        "payloadType": "bool",
+        "repeat": "30",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "x": 290,
+        "y": 660,
+        "wires": [
+            [
+                "9d4426e4.86a31"
+            ]
+        ]
+    },
+    {
+        "id": "ae1e389b.7d3a28",
+        "type": "debug",
+        "z": "a143cb00.2c2da",
+        "name": "",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "x": 670,
+        "y": 660,
+        "wires": []
+    },
+    {
+        "id": "8a75e4bf.7e9868",
+        "type": "debug",
+        "z": "a143cb00.2c2da",
+        "name": "",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "x": 990,
+        "y": 360,
+        "wires": []
+    },
+    {
+        "id": "188ed67f.b41862",
+        "type": "join",
+        "z": "a143cb00.2c2da",
+        "name": "",
+        "mode": "custom",
+        "build": "merged",
+        "property": "payload",
+        "propertyType": "msg",
+        "key": "topic",
+        "joiner": "\\n",
+        "joinerType": "str",
+        "accumulate": true,
+        "timeout": "1",
+        "count": "",
+        "reduceRight": false,
+        "reduceExp": "",
+        "reduceInit": "",
+        "reduceInitType": "",
+        "reduceFixup": "",
+        "x": 810,
+        "y": 320,
+        "wires": [
+            [
+                "8a75e4bf.7e9868",
+                "c11bc4b4.ec23a"
+            ]
+        ]
+    },
+    {
+        "id": "7dbe0ef9.0aa2f",
+        "type": "http request",
+        "z": "a143cb00.2c2da",
+        "name": "Send to IFTTT",
+        "method": "POST",
+        "ret": "txt",
+        "paytoqs": false,
+        "url": "https://maker.ifttt.com/trigger/temp_high/with/key/dSBW3E3aEr1Nn7OvoDXiC5",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "authType": "",
+        "x": 1200,
+        "y": 160,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "fc323411.5b1398",
+        "type": "http request",
+        "z": "a143cb00.2c2da",
+        "name": "Send to IFTTT",
+        "method": "POST",
+        "ret": "txt",
+        "paytoqs": false,
+        "url": "https://maker.ifttt.com/trigger/temp_low/with/key/dSBW3E3aEr1Nn7OvoDXiC5",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "authType": "",
+        "x": 1200,
+        "y": 240,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "e3c4722.40bd81",
+        "type": "mqtt-broker",
+        "z": "",
+        "name": "test.mosquitto.org",
+        "broker": "test.mosquitto.org",
+        "port": "1883",
+        "clientid": "",
+        "usetls": false,
+        "compatmode": false,
+        "keepalive": "60",
+        "cleansession": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthPayload": "",
+        "closeTopic": "",
+        "closeQos": "0",
+        "closePayload": "",
+        "willTopic": "",
+        "willQos": "0",
+        "willPayload": ""
+    },
+    {
+        "id": "ad2f5ab0.06d6f",
+        "type": "MySQLdatabase",
+        "z": "",
+        "name": "",
+        "host": "192.168.1.4",
+        "port": "3306",
+        "db": "Weather_Station",
+        "tz": "",
+        "charset": "UTF8"
+    }
+]

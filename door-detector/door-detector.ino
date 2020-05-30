@@ -1,105 +1,68 @@
-#pragma region defines
-#define MQTT_MAX_PACKET_SIZE 256
-#define BUTTON_PIN D5
-#pragma endregion
-
-#pragma region includes
-#include <ESP8266WiFi.h>
-#include <WiFiUdp.h>
-#include <PubSubClient.h>
-#pragma endregion
-
-// Network details
-const char *ssid = "Livebox-EC80";
-const char *password = "gWbj6RNW6n3mCwwD3A";
-
-PubSubClient mqttClient(espClient);
-const char *mqttServerAdress = "test.mosquitto.org";
-
-WiFiClient espClient;
-PubSubClient mqttClient(espClient);
-const char *mqttServerAdress = "test.mosquitto.org";
-
-volatile bool buttonPressed = false;
-
+int calibrationTime = 30;
+//the time when the sensor outputs a low impulse
+long unsigned int lowIn;
+//the amount of milliseconds the sensor has to be low
+//before we assume all motion has stopped
+long unsigned int pause = 5000;
+boolean lockLow = true;
+boolean takeLowTime;
+int pirPin = 12; //the digital pin connected to the PIR sensor's output
+int ledPin = 13;
+////
+//SETUP
 void setup()
 {
-    pinMode(BUTTON_PIN, INPUT);
-    attachInterrupt(BUTTON_PIN, ButtonPressed, RISING);
-
     Serial.begin(9600);
-    WiFi.begin(ssid, password);
-    WiFi.mode(WIFI_STA);
-    WiFi.hostname("DoorSensor");
-
-    //Wifi connected
-    Serial.println("WiFi connected");
-    Serial.println(WiFi.localIP()); // Printing the ESP IP address
-    display.setCursor(0, 0);
-    display.println("WiFi connected");
-    display.setCursor(0, 10);
-    display.println(WiFi.localIP());
-    display.display();
-    delay(2500);
-    display.display();
-
-    //Mqtt
-    mqttClient.setServer(mqttServerAdress, 1883);
-
-    // Attempt to connect to the server with the ID "myClientID"
-    if (mqttClient.connect("govie-door-1344"))
+    pinMode(pirPin, INPUT);
+    pinMode(ledPin, OUTPUT);
+    digitalWrite(pirPin, LOW);
+    //give the sensor some time to calibrate
+    Serial.print("calibrating sensor ");
+    for (int i = 0; i < calibrationTime; i++)
     {
-        Serial.println("Connection has been established, well done");
-
-        // Establish the subscribe event
-        //	mqttClient.setCallback(subscribeReceive);
+        Serial.print(".");
+        delay(1000);
     }
-    else
-    {
-        Serial.println("Looks like the server connection failed...");
-    }
+    Serial.println(" done");
+    Serial.println("SENSOR ACTIVE");
+    delay(50);
 }
-
-void mqtt()
-{
-    if (!mqttClient.connected())
-    {
-        reconnect();
-    }
-    // Define
-    String payload = "{\"dp\":" + String(temperature, 2) + "," +
-                     "\"p\":" + String(pressure, 2) + "," +
-                     "\"h_in\":" + String(humidity, 2) + "}";
-
-    // This is needed at the top of the loop!
-    mqttClient.loop();
-
-    //publish the message
-    if (mqttClient.publish("govie-weather-station-1344-in", (char *)payload.c_str()))
-    {
-        //	Serial.println("Publish message success");
-    }
-    /*else
-	{
-		Serial.println("Could not send message :(");
-	}*/
-}
-
+//LOOP
 void loop()
 {
-    mqtt() if (buttonPressed)
+    if (digitalRead(pirPin) == HIGH)
     {
-        sendTelegramMessage();
+        digitalWrite(ledPin, HIGH); //the led visualizes the sensors output pin state
+        if (lockLow)
+        {
+            lockLow = false;
+            Serial.println("---");
+            Serial.print("motion detected at ");
+            Serial.print(millis() / 1000);
+            Serial.println(" sec");
+            delay(50);
+        }
+        takeLowTime = true;
     }
-}
-
-void ButtonPressed()
-{
-    Serial.println("ButtonPressed");
-    int button = digitalRead(BUTTON_PIN);
-    if (button == HIGH)
+    if (digitalRead(pirPin) == LOW)
     {
-        buttonPressed = true;
+        digitalWrite(ledPin, LOW); //the led visualizes the sensors output pin state
+        if (takeLowTime)
+        {
+            lowIn = millis(); //save the time of the transition from high to LOW
+            takeLowTime = false;
+        }
+        //if the sensor is low for more than the given pause,
+        //we assume that no more motion is going to happen
+        if (!lockLow && millis() - lowIn > pause)
+        {
+            //makes sure this block of code is only executed again after
+            //a new motion sequence has been detected
+            lockLow = true;
+            Serial.print("motion ended at "); //output
+            Serial.print((millis() - pause) / 1000);
+            Serial.println(" sec");
+            delay(50);
+        }
     }
-    return;
 }
