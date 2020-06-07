@@ -13,6 +13,7 @@ My home IOT devices, Composed of 2 weather stations.
   - [Outside station](#outside-station)
     - [Components](#components-1)
     - [Code explaination](#code-explaination-1)
+      - [Sending Data](#sending-data-1)
       - [Getting sensor data](#getting-sensor-data-1)
   - [Server side](#server-side)
     - [For the weather stations](#for-the-weather-stations)
@@ -25,19 +26,23 @@ My home IOT devices, Composed of 2 weather stations.
 
 ## Inside Station
 
+![](docs/station.jpg)
+
 ### Components
 
 The componentes in this build are the folowwing :
 
 |           part            |               role               |
 | :-----------------------: | :------------------------------: |
-| ESP8266 (nodemcu variant) |         microcontroller          |
-|          BME280           | temperature, humidity, pressure  |
-|       0.96 Oled I2C       | display for temperature and time |
+| ESP8266 (Nodemcu variant) |         Microcontroller          |
+|          BME280           | Temperature, humidity, pressure  |
+|       0.96 Oled I2C       | Display for temperature and time |
 
 ### Wiring Diargram
 
 ![](docs/WireDiag.png)
+
+![](docs/station_in.jpg)
 
 ### Code explaination
 
@@ -47,14 +52,72 @@ This project uses mqtt to send the data. I am utilising the test broker for mosq
 
 #### Getting sensor data
 
+reading teh sensor data is made with the Adafruit_Sensor.h and Adafruit_BME280.h libraries. The BME sensors communicates with I²C
+
+```c
+humidity = bme.readHumidity();
+temperature = bme.readTemperature();
+altitude = bme.readAltitude(SEALEVELPRESSURE_HPA);
+```
 
 #### Displaying data on the screen
 
+On the inside station i have a small oled screen (see picture above for example). It allow be to show the current inside temperature as webb as the time.
+THis displya uses the Adafruit_GFX.h and Adafruit_SSD1306.h libraries. Allow you to create graphics and much more for your displays.
+Here is the code used for the display :
+
+```c
+void updateLCD()
+{
+	display.clearDisplay();
+	display.setTextSize(1);
+
+	// humidity
+	display.setCursor(0, 15);
+	display.print(humidity);
+	display.print("%");
+
+	// pressure
+	display.setCursor(0, 25);
+	display.print(pressure);
+	display.print("hpa");
+
+	// time
+	display.setTextSize(2);
+	display.setCursor(0, 0);
+	if (hour(serverTime) < 10)
+	{
+		display.print("0");
+	}
+	display.print(hour(serverTime));
+	display.print(":");
+	if (minute(serverTime) < 10)
+	{
+		display.print("0");
+	}
+	display.print(minute(serverTime));
+
+	// temperature
+	display.setTextSize(5);
+	display.setCursor((display.width() / 2) + 3, 0);
+	display.print((int)temperature);
+	display.setTextSize(2);
+	display.setCursor((display.width() / 2) + 3, (display.height() - 15));
+	display.print(temperature);
+
+	//line diff
+	display.drawLine(((display.width() - 2) / 2), 0, ((display.width() - 2) / 2), display.height(), WHITE);
+	display.display();
+}
+```
+
+It is abit of a pain because you have to set the posiyion each time you xant to write someythings and also trace individual lines.
 
 #### Sending Data
 
 The data is send in a json string so it is easier to manage server side.
 Example string send from the esp card
+
 ```json
 {
   "t_in":"25.4",
@@ -71,24 +134,42 @@ The componentes in this build are the folowwing :
 
 |           part            |               role               |
 | :-----------------------: | :------------------------------: |
-| ESP8266 (nodemcu variant) |         microcontroller          |
+| ESP8266 (Wemos variant) |         microcontroller          |
 |          ds18b20           | temperature  |
 
 
-This project uses mqtt to send the data. I am utilising the test broker for mosquitto (Was too lazy to set up my own broker).7
+This project uses mqtt to send the data. I am utilising the [test broker for mosquitto](http://test.mosquitto.org/) (Was too lazy to set up my own broker).
 
 ### Code explaination
 
 [See project Code](outside_station/src/main.ino)
 
+#### Sending Data
+
+The data is send in a json string so it is easier to manage server side.
+Example string send from the esp card
+
+```json
+{
+  "t_out":28.5
+}
+```
+
 #### Getting sensor data
 
+```c
+sensors.requestTemperatures();
+Celcius = sensors.getTempCByIndex(0);
+Serial.println(Celcius);
+```
 
 ## Server side
 
-Now on node red ! You can find the node red script [here](node-red.json)
+Now on [node red](https://nodered.org/) ! You can find the node red script [here](node-red.json)
 
 The code doesnt to any treament of the data, it only stores the values in the database
+
+![](docs/node-red.png)
 
 Basicly what happens :
 
@@ -119,10 +200,13 @@ Basicly what happens :
 ## Data visualisation
 
 I ♥ stats and graphs.
-With that said the only logical choice is to use graphana
+
+With that said the only logical choice is to use [grafana](https://grafana.com/). Here I can have a whole view of all the data from my diffrent stations and the api.
+
+![](/docs/grafana.png)
+
 You can find my dashboard preset [here](grafana.json)
 
-![](/docs/graph.png)
 
 ## Helpfull links
 
