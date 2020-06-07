@@ -3,27 +3,27 @@
 My home IOT devices, Composed of 2 weather stations.
 
 - [HomeIOT](#homeiot)
-  - [Inside Station](#inside-station)
-    - [Components](#components)
-    - [Wiring Diargram](#wiring-diargram)
-    - [Code explaination](#code-explaination)
-      - [Getting sensor data](#getting-sensor-data)
-      - [Displaying data on the screen](#displaying-data-on-the-screen)
-      - [Sending Data](#sending-data)
-  - [Outside station](#outside-station)
-    - [Components](#components-1)
-    - [Wiring](#wiring)
-    - [Code explaination](#code-explaination-1)
-      - [Sending Data](#sending-data-1)
-      - [Getting sensor data](#getting-sensor-data-1)
-  - [Server side](#server-side)
-    - [For the weather stations](#for-the-weather-stations)
-    - [For the Openweathermap API](#for-the-openweathermap-api)
-    - [For the database](#for-the-database)
-    - [For the monitoring](#for-the-monitoring)
-  - [Data retention](#data-retention)
-  - [Data visualisation](#data-visualisation)
-  - [Helpfull links](#helpfull-links)
+	- [Inside Station](#inside-station)
+		- [Components](#components)
+		- [Wiring Diargram](#wiring-diargram)
+		- [Code explaination](#code-explaination)
+			- [Getting sensor data](#getting-sensor-data)
+			- [Displaying data on the screen](#displaying-data-on-the-screen)
+			- [Sending Data](#sending-data)
+	- [Outside station](#outside-station)
+		- [Components](#components-1)
+		- [Wiring](#wiring)
+		- [Code explaination](#code-explaination-1)
+			- [Sending Data](#sending-data-1)
+			- [Getting sensor data](#getting-sensor-data-1)
+	- [Server side](#server-side)
+		- [For the weather stations](#for-the-weather-stations)
+		- [For the Openweathermap API](#for-the-openweathermap-api)
+		- [For the database](#for-the-database)
+		- [For the monitoring](#for-the-monitoring)
+	- [Data retention](#data-retention)
+	- [Data visualisation](#data-visualisation)
+	- [Helpfull links](#helpfull-links)
 
 
 ## Inside Station
@@ -143,7 +143,7 @@ This project uses mqtt to send the data. I am utilising the [test broker for mos
 
 ### Wiring
 
-The wireing is extremly simple for this one. The sensor is base on the OneWire principle. You ask for the data and it send the data back. The only Specific thing to do is that you need to put a pull up resistor 
+The wireing is extremly simple for this one. The sensor is base on the OneWire principle. You ask for the data and it send the data back. The only specific thing to do is that you need to put a pull up resistor from the data line and the 3.3V (4.7 Kohm).
 
 ### Code explaination
 
