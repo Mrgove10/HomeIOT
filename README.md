@@ -12,6 +12,7 @@ My home IOT devices, Composed of 2 weather stations.
       - [Sending Data](#sending-data)
   - [Outside station](#outside-station)
     - [Components](#components-1)
+    - [Wiring](#wiring)
     - [Code explaination](#code-explaination-1)
       - [Sending Data](#sending-data-1)
       - [Getting sensor data](#getting-sensor-data-1)
@@ -20,6 +21,7 @@ My home IOT devices, Composed of 2 weather stations.
     - [For the Openweathermap API](#for-the-openweathermap-api)
     - [For the database](#for-the-database)
     - [For the monitoring](#for-the-monitoring)
+  - [Data retention](#data-retention)
   - [Data visualisation](#data-visualisation)
   - [Helpfull links](#helpfull-links)
 
@@ -137,8 +139,11 @@ The componentes in this build are the folowwing :
 | ESP8266 (Wemos variant) |         microcontroller          |
 |          ds18b20           | temperature  |
 
-
 This project uses mqtt to send the data. I am utilising the [test broker for mosquitto](http://test.mosquitto.org/) (Was too lazy to set up my own broker).
+
+### Wiring
+
+The wireing is extremly simple for this one. The sensor is base on the OneWire principle. You ask for the data and it send the data back. The only Specific thing to do is that you need to put a pull up resistor 
 
 ### Code explaination
 
@@ -185,7 +190,7 @@ Basicly what happens :
 
 ### For the database
 
-1) Every 1minute read from the 3 files (inside, outside & api)
+1) Every 1 minute read from the 3 files (inside, outside & api)
 2) Calclate the Humidex
 3) Join those 3 fies into a single JSON
 4) Insert the JSON into the database
@@ -197,6 +202,23 @@ Basicly what happens :
 3) Send request to IFTTT
 4) Receive the according notification on your phone
 
+## Data retention
+
+To keep all my data I used what I already had. In my cas I already had a mysql database so I made a new table for that.
+
+This is what the table looks like :
+```SQL
+ID int auto_increment,
+Date datetime null,
+InsideTemp float null,
+OutsideTemp float null,
+Pressure float null,
+InsideHumidity float null,
+OutsideHumidity float null,
+```
+
+As of Juin 2020 there is more then 300 000 lignes in that table !
+
 ## Data visualisation
 
 I ♥ stats and graphs.
@@ -206,7 +228,6 @@ With that said the only logical choice is to use [grafana](https://grafana.com/)
 ![](/docs/grafana.png)
 
 You can find my dashboard preset [here](grafana.json)
-
 
 ## Helpfull links
 
