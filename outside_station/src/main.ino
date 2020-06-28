@@ -16,8 +16,8 @@ WiFiClient espClient;
 PubSubClient mqttClient(espClient);
 const char *mqttServerAdress = "test.mosquitto.org";
 
-const char *ssid = "Livebox-EC80";
-const char *password = "gWbj6RNW6n3mCwwD3A";
+const char *ssid = "";
+const char *password = "";
 
 void setup(void)
 {

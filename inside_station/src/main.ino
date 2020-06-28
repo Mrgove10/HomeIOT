@@ -23,8 +23,8 @@
 Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, -1);
 
 // Network details
-const char *ssid = "Livebox-EC80";
-const char *password = "gWbj6RNW6n3mCwwD3A";
+const char *ssid = "";
+const char *password = "";
 
 //Varriables
 float humidity, pressure, temperature, altitude;
