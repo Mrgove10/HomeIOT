@@ -1,35 +1,17 @@
 [
     {
-        "id": "a143cb00.2c2da",
+        "id": "567e3fe2.08f88",
         "type": "tab",
         "label": "Main Flow",
         "disabled": false,
         "info": ""
     },
     {
-        "id": "efe2f1e8.fc91c",
-        "type": "mqtt in",
-        "z": "a143cb00.2c2da",
-        "name": "Receive MQTT Message Inside",
-        "topic": "govie-weather-station-1344-in",
-        "qos": "2",
-        "datatype": "json",
-        "broker": "e3c4722.40bd81",
-        "x": 270,
-        "y": 200,
-        "wires": [
-            [
-                "ad5a2252.e236e8",
-                "90887f95.48b19"
-            ]
-        ]
-    },
-    {
-        "id": "ad5a2252.e236e8",
+        "id": "a4ba6247.6483a",
         "type": "debug",
-        "z": "a143cb00.2c2da",
+        "z": "567e3fe2.08f88",
         "name": "",
-        "active": false,
+        "active": true,
         "tosidebar": true,
         "console": false,
         "tostatus": false,
@@ -40,68 +22,68 @@
         "wires": []
     },
     {
-        "id": "675208b7.3f3fd8",
+        "id": "c12bafb8.aa1f3",
         "type": "mysql",
-        "z": "a143cb00.2c2da",
-        "mydb": "ad2f5ab0.06d6f",
+        "z": "567e3fe2.08f88",
+        "mydb": "efd09d12.72f64",
         "name": "Mysql Database",
-        "x": 1260,
-        "y": 480,
+        "x": 1180,
+        "y": 580,
         "wires": [
             [
-                "3d09b42e.9a07e4"
+                "f662a9e6.43d628"
             ]
         ]
     },
     {
-        "id": "3d09b42e.9a07e4",
+        "id": "f662a9e6.43d628",
         "type": "debug",
-        "z": "a143cb00.2c2da",
-        "name": "",
-        "active": false,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "payload",
-        "targetType": "msg",
-        "x": 1450,
-        "y": 480,
-        "wires": []
-    },
-    {
-        "id": "beba7005.8b09e",
-        "type": "catch",
-        "z": "a143cb00.2c2da",
-        "name": "",
-        "scope": null,
-        "uncaught": false,
-        "x": 1020,
-        "y": 80,
-        "wires": [
-            [
-                "7a9c68.e14d9398"
-            ]
-        ]
-    },
-    {
-        "id": "7a9c68.e14d9398",
-        "type": "debug",
-        "z": "a143cb00.2c2da",
+        "z": "567e3fe2.08f88",
         "name": "",
         "active": true,
         "tosidebar": true,
         "console": false,
         "tostatus": false,
-        "complete": "true",
-        "targetType": "full",
-        "x": 1170,
-        "y": 80,
+        "complete": "payload",
+        "targetType": "msg",
+        "x": 1370,
+        "y": 580,
         "wires": []
     },
     {
-        "id": "a13791d6.3a27",
+        "id": "4a9b30d9.07d398",
+        "type": "catch",
+        "z": "567e3fe2.08f88",
+        "name": "",
+        "scope": null,
+        "uncaught": false,
+        "x": 240,
+        "y": 40,
+        "wires": [
+            [
+                "4a166f79.47b4b"
+            ]
+        ]
+    },
+    {
+        "id": "4a166f79.47b4b",
+        "type": "debug",
+        "z": "567e3fe2.08f88",
+        "name": "",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "x": 390,
+        "y": 40,
+        "wires": []
+    },
+    {
+        "id": "6318b2d8.247874",
         "type": "openweathermap",
-        "z": "a143cb00.2c2da",
+        "z": "567e3fe2.08f88",
         "name": "",
         "wtype": "current",
         "lon": "5.777836",
@@ -109,105 +91,45 @@
         "city": "",
         "country": "",
         "language": "en",
-        "x": 450,
+        "x": 430,
         "y": 100,
         "wires": [
             [
-                "d03c9035.f972a",
-                "acdec7f5.f76da8"
+                "789f0935.0d2f3",
+                "8a00a2e5.10a39"
             ]
         ]
     },
     {
-        "id": "dfa2c1b1.a91c7",
-        "type": "e-mail",
-        "z": "a143cb00.2c2da",
-        "server": "smtp.gmail.com",
-        "port": "465",
-        "secure": true,
-        "tls": true,
-        "name": "richardadrien0@gmail.com",
-        "dname": "Send Mail",
-        "x": 1180,
-        "y": 120,
-        "wires": []
-    },
-    {
-        "id": "1f13e7d8.34252",
-        "type": "function",
-        "z": "a143cb00.2c2da",
-        "name": "Format Mail",
-        "func": "var newMsg = {\n    topic :\"Il Fait plus de 28°C\",\n    payload : \"Il Fait plus de 28°C\"\n}\nreturn newMsg;",
-        "outputs": 1,
-        "noerr": 0,
-        "x": 1030,
-        "y": 160,
-        "wires": [
-            [
-                "a419009b.b568b"
-            ]
-        ]
-    },
-    {
-        "id": "a419009b.b568b",
-        "type": "e-mail",
-        "z": "a143cb00.2c2da",
-        "server": "smtp.gmail.com",
-        "port": "465",
-        "secure": true,
-        "tls": true,
-        "name": "richardadrien0@gmail.com",
-        "dname": "Send Mail",
-        "x": 1180,
-        "y": 160,
-        "wires": []
-    },
-    {
-        "id": "2ef67e5e.5f1dda",
+        "id": "86b026b3.9e998",
         "type": "comment",
-        "z": "a143cb00.2c2da",
+        "z": "567e3fe2.08f88",
         "name": "Usefull links",
         "info": "https://nodered.org/docs/user-guide/writing-functions\n\nhttps://flows.nodered.org/node/node-red-node-email\n\nhttps://flows.nodered.org/node/node-red-node-mysql\n\nhttps://flows.nodered.org/node/node-red-node-openweathermap",
-        "x": 110,
+        "x": 90,
         "y": 40,
         "wires": []
     },
     {
-        "id": "c2c7beae.9534f8",
+        "id": "789f0935.0d2f3",
         "type": "function",
-        "z": "a143cb00.2c2da",
-        "name": "Format Mail",
-        "func": "var newMsg = {\n    topic :\"Il Fait moins de 15°C\",\n    payload : \"Il Fait moins de 15°C\"\n}\nreturn newMsg;",
-        "outputs": 1,
-        "noerr": 0,
-        "x": 1030,
-        "y": 120,
-        "wires": [
-            [
-                "dfa2c1b1.a91c7"
-            ]
-        ]
-    },
-    {
-        "id": "d03c9035.f972a",
-        "type": "function",
-        "z": "a143cb00.2c2da",
+        "z": "567e3fe2.08f88",
         "name": "Format Data",
         "func": "var newMsg = { \n    payload: {\n        p_own : msg.payload.pressure,\n        t_own : msg.payload.tempc,\n        h_own : msg.payload.humidity \n    }\n};\nreturn newMsg;",
         "outputs": 1,
         "noerr": 0,
         "x": 670,
-        "y": 60,
+        "y": 80,
         "wires": [
             [
-                "8d775cb7.b9758"
+                "aa182c9e.d91a9"
             ]
         ]
     },
     {
-        "id": "acdec7f5.f76da8",
+        "id": "8a00a2e5.10a39",
         "type": "debug",
-        "z": "a143cb00.2c2da",
+        "z": "567e3fe2.08f88",
         "name": "",
         "active": false,
         "tosidebar": true,
@@ -216,95 +138,95 @@
         "complete": "payload",
         "targetType": "msg",
         "x": 670,
-        "y": 140,
+        "y": 120,
         "wires": []
     },
     {
-        "id": "8d775cb7.b9758",
+        "id": "aa182c9e.d91a9",
         "type": "file",
-        "z": "a143cb00.2c2da",
+        "z": "567e3fe2.08f88",
         "name": "Write File",
-        "filename": "/home/adrien/.node-red/OpenWeatherMapData.json",
+        "filename": "/home/ubuntu/.node-red/OpenWeatherMapData.json",
         "appendNewline": false,
         "createDir": false,
         "overwriteFile": "true",
         "encoding": "none",
         "x": 840,
-        "y": 60,
+        "y": 80,
         "wires": [
             []
         ]
     },
     {
-        "id": "e38842c5.bf742",
+        "id": "9373611f.1a2358",
         "type": "inject",
-        "z": "a143cb00.2c2da",
+        "z": "567e3fe2.08f88",
         "name": "",
-        "topic": "",
-        "payload": "true",
-        "payloadType": "bool",
         "repeat": "120",
         "crontab": "",
         "once": false,
         "onceDelay": 0.1,
-        "x": 250,
+        "topic": "",
+        "payload": "true",
+        "payloadType": "bool",
+        "x": 210,
         "y": 100,
         "wires": [
             [
-                "a13791d6.3a27"
+                "6318b2d8.247874"
             ]
         ]
     },
     {
-        "id": "8fb3381f.317318",
+        "id": "399f9215.f240d6",
         "type": "rising-edge",
-        "z": "a143cb00.2c2da",
+        "z": "567e3fe2.08f88",
         "name": "",
         "threshold": "28",
         "x": 1010,
-        "y": 240,
+        "y": 420,
         "wires": [
             [
-                "7dbe0ef9.0aa2f"
+                "d39ee0e5.81d5f"
             ]
         ]
     },
     {
-        "id": "c2905d58.dd2c3",
+        "id": "78fe67fb.1486c",
         "type": "falling-edge",
-        "z": "a143cb00.2c2da",
+        "z": "567e3fe2.08f88",
         "name": "",
         "threshold": "15",
         "x": 1010,
-        "y": 320,
+        "y": 460,
         "wires": [
             [
-                "fc323411.5b1398"
+                "62231881.1a903"
             ]
         ]
     },
     {
-        "id": "81536f5c.26d9e8",
+        "id": "48b4470c.97fc38",
         "type": "function",
-        "z": "a143cb00.2c2da",
-        "name": "get Temperature",
+        "z": "567e3fe2.08f88",
+        "name": "Extract Temperature",
         "func": "msg.payload = msg.payload.t_in;\nreturn msg;",
         "outputs": 1,
         "noerr": 0,
-        "x": 790,
-        "y": 280,
+        "x": 800,
+        "y": 440,
         "wires": [
             [
-                "8fb3381f.317318",
-                "c2905d58.dd2c3"
+                "399f9215.f240d6",
+                "78fe67fb.1486c"
             ]
         ]
     },
     {
-        "id": "7dbe0ef9.0aa2f",
+        "id": "d39ee0e5.81d5f",
         "type": "http request",
-        "z": "a143cb00.2c2da",
-        "name": "Send to IFTTT",
+        "z": "567e3fe2.08f88",
+        "name": "Send to IFTTT (temp_high)",
         "method": "POST",
         "ret": "txt",
         "paytoqs": false,
@@ -313,17 +235,17 @@
         "persist": false,
         "proxy": "",
         "authType": "",
-        "x": 1180,
-        "y": 240,
+        "x": 1220,
+        "y": 420,
         "wires": [
             []
         ]
     },
     {
-        "id": "fc323411.5b1398",
+        "id": "62231881.1a903",
         "type": "http request",
-        "z": "a143cb00.2c2da",
-        "name": "Send to IFTTT",
+        "z": "567e3fe2.08f88",
+        "name": "Send to IFTTT (temp_low)",
         "method": "POST",
         "ret": "txt",
         "paytoqs": false,
@@ -332,126 +254,118 @@
         "persist": false,
         "proxy": "",
         "authType": "",
-        "x": 1180,
-        "y": 320,
+        "x": 1220,
+        "y": 460,
         "wires": [
             []
         ]
     },
     {
-        "id": "9b6736b3.1837e",
+        "id": "21e85b69.fee6bc",
         "type": "mqtt in",
-        "z": "a143cb00.2c2da",
+        "z": "567e3fe2.08f88",
         "name": "Receive MQTT Message Outside",
         "topic": "govie-weather-station-1344-out",
         "qos": "2",
         "datatype": "json",
-        "broker": "e3c4722.40bd81",
+        "broker": "4902451c.f93f3c",
         "x": 270,
-        "y": 280,
+        "y": 320,
         "wires": [
             [
-                "61563ebe.cce658",
-                "ad5a2252.e236e8"
+                "a9fb2f45.f1e378",
+                "d128d5d.c798228",
+                "a4ba6247.6483a"
             ]
         ]
     },
     {
-        "id": "90887f95.48b19",
+        "id": "804a68b7.38c698",
         "type": "file",
-        "z": "a143cb00.2c2da",
+        "z": "567e3fe2.08f88",
         "name": "Write File",
-        "filename": "/home/adrien/.node-red/InsideData.json",
+        "filename": "/home/ubuntu/.node-red/InsideData.json",
         "appendNewline": false,
         "createDir": false,
         "overwriteFile": "true",
         "encoding": "none",
         "x": 500,
-        "y": 180,
+        "y": 200,
         "wires": [
             []
         ]
     },
     {
-        "id": "61563ebe.cce658",
+        "id": "a9fb2f45.f1e378",
         "type": "file",
-        "z": "a143cb00.2c2da",
+        "z": "567e3fe2.08f88",
         "name": "Write File",
-        "filename": "/home/adrien/.node-red/OutsideData.json",
+        "filename": "/home/ubuntu/.node-red/OutsideData.json",
         "appendNewline": false,
         "createDir": false,
         "overwriteFile": "true",
         "encoding": "none",
         "x": 500,
-        "y": 300,
+        "y": 360,
         "wires": [
             []
         ]
     },
     {
-        "id": "7b7144a7.f354fc",
+        "id": "1bba835f.56960d",
         "type": "inject",
-        "z": "a143cb00.2c2da",
+        "z": "567e3fe2.08f88",
         "name": "",
-        "topic": "",
-        "payload": "true",
-        "payloadType": "bool",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
         "repeat": "60",
         "crontab": "",
         "once": false,
         "onceDelay": 0.1,
+        "topic": "",
+        "payload": "true",
+        "payloadType": "bool",
         "x": 190,
-        "y": 460,
+        "y": 560,
         "wires": [
             [
-                "d127e89c.88622",
-                "bcdac60b.9068c",
-                "3bd6d5be.5c398a"
+                "4bb73356.f8e3ec",
+                "5baa8075.78e6b",
+                "17cde34d.4be36d"
             ]
         ]
     },
     {
-        "id": "d127e89c.88622",
+        "id": "4bb73356.f8e3ec",
         "type": "file in",
-        "z": "a143cb00.2c2da",
+        "z": "567e3fe2.08f88",
         "name": "Read File (OWM)",
-        "filename": "/home/adrien/.node-red/OpenWeatherMapData.json",
+        "filename": "/home/ubuntu/.node-red/OpenWeatherMapData.json",
         "format": "utf8",
         "chunk": false,
         "sendError": false,
         "encoding": "none",
         "x": 410,
-        "y": 460,
+        "y": 600,
         "wires": [
             [
-                "5917ff30.14e88"
+                "fa5df9ce.1f047"
             ]
         ]
     },
     {
-        "id": "bcdac60b.9068c",
+        "id": "5baa8075.78e6b",
         "type": "file in",
-        "z": "a143cb00.2c2da",
+        "z": "567e3fe2.08f88",
         "name": "Read File (Inside)",
-        "filename": "/home/adrien/.node-red/InsideData.json",
-        "format": "utf8",
-        "chunk": false,
-        "sendError": false,
-        "encoding": "none",
-        "x": 410,
-        "y": 400,
-        "wires": [
-            [
-                "7ed2cd12.f91244"
-            ]
-        ]
-    },
-    {
-        "id": "3bd6d5be.5c398a",
-        "type": "file in",
-        "z": "a143cb00.2c2da",
-        "name": "Read File (Ouside)",
-        "filename": "/home/adrien/.node-red/OutsideData.json",
+        "filename": "/home/ubuntu/.node-red/InsideData.json",
         "format": "utf8",
         "chunk": false,
         "sendError": false,
@@ -460,14 +374,32 @@
         "y": 520,
         "wires": [
             [
-                "d86b1d14.c7e72"
+                "1efcf903.694fb7"
             ]
         ]
     },
     {
-        "id": "331d8e84.eeedca",
+        "id": "17cde34d.4be36d",
+        "type": "file in",
+        "z": "567e3fe2.08f88",
+        "name": "Read File (Ouside)",
+        "filename": "/home/ubuntu/.node-red/OutsideData.json",
+        "format": "utf8",
+        "chunk": false,
+        "sendError": false,
+        "encoding": "none",
+        "x": 410,
+        "y": 560,
+        "wires": [
+            [
+                "8f069622.af7da"
+            ]
+        ]
+    },
+    {
+        "id": "f3a16d7a.7dfd78",
         "type": "join",
-        "z": "a143cb00.2c2da",
+        "z": "567e3fe2.08f88",
         "name": "",
         "mode": "custom",
         "build": "merged",
@@ -477,7 +409,7 @@
         "joiner": "\\n",
         "joinerType": "str",
         "accumulate": false,
-        "timeout": "2",
+        "timeout": "10",
         "count": "",
         "reduceRight": false,
         "reduceExp": "",
@@ -485,17 +417,17 @@
         "reduceInitType": "",
         "reduceFixup": "",
         "x": 810,
-        "y": 480,
+        "y": 580,
         "wires": [
             [
-                "12d20d05.acfda3"
+                "5af8f480.be70c4"
             ]
         ]
     },
     {
-        "id": "e71fa0c2.b90cc",
+        "id": "3e6c4ce5.cd7e34",
         "type": "debug",
-        "z": "a143cb00.2c2da",
+        "z": "567e3fe2.08f88",
         "name": "",
         "active": false,
         "tosidebar": true,
@@ -503,14 +435,46 @@
         "tostatus": false,
         "complete": "payload",
         "targetType": "msg",
-        "x": 1110,
-        "y": 540,
+        "x": 1170,
+        "y": 640,
         "wires": []
     },
     {
-        "id": "d86b1d14.c7e72",
+        "id": "8f069622.af7da",
         "type": "json",
-        "z": "a143cb00.2c2da",
+        "z": "567e3fe2.08f88",
+        "name": "",
+        "property": "payload",
+        "action": "obj",
+        "pretty": false,
+        "x": 590,
+        "y": 560,
+        "wires": [
+            [
+                "f3a16d7a.7dfd78"
+            ]
+        ]
+    },
+    {
+        "id": "bcd43e51.c0f188",
+        "type": "function",
+        "z": "567e3fe2.08f88",
+        "name": "Calculate humidex",
+        "func": "msg.payload.humidex = HUMIDEX(msg.payload.t_in,msg.payload.h_in);\nreturn msg;\n\n/*\n * Calculates the humidex.\n * Source : https://memory.psych.mun.ca/tech/js/humidex/\n */\nfunction HUMIDEX(temp, hum) {\n\tvar t_celcius= temp;\n\tvar humidity = hum;\n\n\tvar t_kelvin=t_celcius + 273;\n\tvar eTs=Math.pow(10,((-2937.4 /t_kelvin)-4.9283* Math.log(t_kelvin)/Math.LN10 +23.5471));\n\tvar eTd=eTs * humidity /100;\n\n\tvar humidex=Math.round(t_celcius + ((eTd-10)*5/9));\n\tif (humidex < t_celcius) {\n\t\thumidex=t_celcius;\n\t}\n\n    return humidex;\n}\n",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 790,
+        "y": 500,
+        "wires": [
+            [
+                "f3a16d7a.7dfd78"
+            ]
+        ]
+    },
+    {
+        "id": "1efcf903.694fb7",
+        "type": "json",
+        "z": "567e3fe2.08f88",
         "name": "",
         "property": "payload",
         "action": "obj",
@@ -519,78 +483,310 @@
         "y": 520,
         "wires": [
             [
-                "331d8e84.eeedca"
+                "bcd43e51.c0f188",
+                "48b4470c.97fc38"
             ]
         ]
     },
     {
-        "id": "24bde74b.6965a8",
-        "type": "function",
-        "z": "a143cb00.2c2da",
-        "name": "Calculate humidex",
-        "func": "msg.payload.humidex = HUMIDEX(msg.payload.t_in,msg.payload.h_in);\nreturn msg;\n\n/*\n * Calculates the humidex.\n * Source : https://memory.psych.mun.ca/tech/js/humidex/\n */\nfunction HUMIDEX(temp, hum) {\n\tvar t_celcius= temp;\n\tvar humidity = hum;\n\n\tvar t_kelvin=t_celcius + 273;\n\tvar eTs=Math.pow(10,((-2937.4 /t_kelvin)-4.9283* Math.log(t_kelvin)/Math.LN10 +23.5471));\n\tvar eTd=eTs * humidity /100;\n\n\tvar humidex=Math.round(t_celcius + ((eTd-10)*5/9));\n\tif (humidex < t_celcius) {\n\t\thumidex=t_celcius;\n\t}\n\n    return humidex;\n}\n",
-        "outputs": 1,
-        "noerr": 0,
-        "x": 790,
-        "y": 400,
-        "wires": [
-            [
-                "331d8e84.eeedca"
-            ]
-        ]
-    },
-    {
-        "id": "7ed2cd12.f91244",
+        "id": "fa5df9ce.1f047",
         "type": "json",
-        "z": "a143cb00.2c2da",
+        "z": "567e3fe2.08f88",
         "name": "",
         "property": "payload",
         "action": "obj",
         "pretty": false,
         "x": 590,
-        "y": 400,
+        "y": 600,
         "wires": [
             [
-                "24bde74b.6965a8",
-                "81536f5c.26d9e8"
+                "f3a16d7a.7dfd78"
             ]
         ]
     },
     {
-        "id": "5917ff30.14e88",
-        "type": "json",
-        "z": "a143cb00.2c2da",
-        "name": "",
-        "property": "payload",
-        "action": "obj",
-        "pretty": false,
-        "x": 590,
-        "y": 460,
-        "wires": [
-            [
-                "331d8e84.eeedca"
-            ]
-        ]
-    },
-    {
-        "id": "12d20d05.acfda3",
+        "id": "5af8f480.be70c4",
         "type": "function",
-        "z": "a143cb00.2c2da",
+        "z": "567e3fe2.08f88",
         "name": "Format Data",
         "func": "var currentdate = new Date().toISOString().slice(0, 19).replace('T', ' ');\nconsole.log(msg.file);\nvar pl = msg.payload;\n    var newMsg = {\n        payload: [\n            currentdate, \n            pl.p_own,\n            pl.t_in,\n            pl.h_in,\n            pl.t_out,\n            pl.h_own,\n            pl.humidex\n        ],\n        topic:`INSERT INTO Stats (Date, \n        Pressure,\n        InsideTemp,\n        InsideHumidity,\n        OutsideTemp,\n        OutsideHumidity,\n        Humidex) \n        VALUES (?,?,?,?,?,?,?)`\n    };\nreturn newMsg",
         "outputs": 1,
         "noerr": 0,
-        "x": 1050,
-        "y": 480,
+        "x": 970,
+        "y": 580,
         "wires": [
             [
-                "e71fa0c2.b90cc",
-                "675208b7.3f3fd8"
+                "3e6c4ce5.cd7e34",
+                "c12bafb8.aa1f3"
             ]
         ]
     },
     {
-        "id": "e3c4722.40bd81",
+        "id": "a54713ff.7a55a",
+        "type": "switch",
+        "z": "567e3fe2.08f88",
+        "name": "in > out",
+        "property": "payload.t_in",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "head",
+                "v": "",
+                "vt": "num"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 1,
+        "x": 960,
+        "y": 780,
+        "wires": [
+            [
+                "81a4287b.53a31"
+            ]
+        ]
+    },
+    {
+        "id": "8c8f75b6.a6b7f",
+        "type": "debug",
+        "z": "567e3fe2.08f88",
+        "name": "",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "x": 970,
+        "y": 900,
+        "wires": []
+    },
+    {
+        "id": "e3f24e05.c0c358",
+        "type": "join",
+        "z": "567e3fe2.08f88",
+        "name": "",
+        "mode": "custom",
+        "build": "merged",
+        "property": "payload",
+        "propertyType": "msg",
+        "key": "topic",
+        "joiner": "\\n",
+        "joinerType": "str",
+        "accumulate": false,
+        "timeout": "5",
+        "count": "",
+        "reduceRight": false,
+        "reduceExp": "",
+        "reduceInit": "",
+        "reduceInitType": "",
+        "reduceFixup": "",
+        "x": 770,
+        "y": 800,
+        "wires": [
+            [
+                "8c8f75b6.a6b7f",
+                "a54713ff.7a55a",
+                "328756a2.3acdf2",
+                "7110fcb8.3e3c1c",
+                "54bc2755.0291b"
+            ]
+        ]
+    },
+    {
+        "id": "328756a2.3acdf2",
+        "type": "switch",
+        "z": "567e3fe2.08f88",
+        "name": "out > in ",
+        "property": "payload.t_in",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 1,
+        "x": 960,
+        "y": 820,
+        "wires": [
+            [
+                "d4c56dff.518578"
+            ]
+        ]
+    },
+    {
+        "id": "54bc2755.0291b",
+        "type": "switch",
+        "z": "567e3fe2.08f88",
+        "name": "out < in ",
+        "property": "payload.t_in",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 1,
+        "x": 960,
+        "y": 740,
+        "wires": [
+            [
+                "81a4287b.53a31"
+            ]
+        ]
+    },
+    {
+        "id": "7110fcb8.3e3c1c",
+        "type": "switch",
+        "z": "567e3fe2.08f88",
+        "name": "in < out ",
+        "property": "payload.t_in",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 1,
+        "x": 960,
+        "y": 860,
+        "wires": [
+            [
+                "d4c56dff.518578"
+            ]
+        ]
+    },
+    {
+        "id": "d4c56dff.518578",
+        "type": "http request",
+        "z": "567e3fe2.08f88",
+        "name": "Send to IFTTT (window_close)",
+        "method": "POST",
+        "ret": "txt",
+        "paytoqs": false,
+        "url": "https://maker.ifttt.com/trigger/window_close/with/key/dSBW3E3aEr1Nn7OvoDXiC5",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "authType": "",
+        "x": 1190,
+        "y": 840,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "81a4287b.53a31",
+        "type": "http request",
+        "z": "567e3fe2.08f88",
+        "name": "Send to IFTTT (window_open)",
+        "method": "POST",
+        "ret": "txt",
+        "paytoqs": false,
+        "url": "https://maker.ifttt.com/trigger/window_open/with/key/dSBW3E3aEr1Nn7OvoDXiC5",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "authType": "",
+        "x": 1190,
+        "y": 760,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "abb5202b.d01e18",
+        "type": "comment",
+        "z": "567e3fe2.08f88",
+        "name": "(Summer Only)",
+        "info": "(Summer Only)",
+        "x": 780,
+        "y": 700,
+        "wires": []
+    },
+    {
+        "id": "a27aad61.506fa8",
+        "type": "mqtt in",
+        "z": "567e3fe2.08f88",
+        "name": "Receive MQTT Message Inside",
+        "topic": "govie-weather-station-1344-in",
+        "qos": "2",
+        "datatype": "json",
+        "broker": "d1b933cf.2c44f",
+        "x": 270,
+        "y": 240,
+        "wires": [
+            [
+                "804a68b7.38c698",
+                "d128d5d.c798228",
+                "a4ba6247.6483a"
+            ]
+        ]
+    },
+    {
+        "id": "d128d5d.c798228",
+        "type": "timeout",
+        "z": "567e3fe2.08f88",
+        "name": "My Timeout",
+        "outtopic": "",
+        "outsafe": "Safe",
+        "outwarning": "Warning",
+        "outunsafe": "Unsafe",
+        "warning": "0",
+        "timer": "250",
+        "repeat": false,
+        "again": false,
+        "x": 510,
+        "y": 280,
+        "wires": [
+            [
+                "41bdd4da.cc9314"
+            ]
+        ]
+    },
+    {
+        "id": "41bdd4da.cc9314",
+        "type": "http request",
+        "z": "567e3fe2.08f88",
+        "name": "Send to IFTTT (error)",
+        "method": "POST",
+        "ret": "txt",
+        "paytoqs": "ignore",
+        "url": "https://maker.ifttt.com/trigger/error/with/key/dSBW3E3aEr1Nn7OvoDXiC5",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "authType": "",
+        "x": 740,
+        "y": 280,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "efd09d12.72f64",
+        "type": "MySQLdatabase",
+        "z": "",
+        "name": "",
+        "host": "192.168.1.38",
+        "port": "3306",
+        "db": "Weather_Station",
+        "tz": ""
+    },
+    {
+        "id": "4902451c.f93f3c",
         "type": "mqtt-broker",
         "z": "",
         "name": "test.mosquitto.org",
@@ -612,14 +808,25 @@
         "willPayload": ""
     },
     {
-        "id": "ad2f5ab0.06d6f",
-        "type": "MySQLdatabase",
+        "id": "d1b933cf.2c44f",
+        "type": "mqtt-broker",
         "z": "",
         "name": "",
-        "host": "192.168.1.4",
-        "port": "3306",
-        "db": "Weather_Station",
-        "tz": "",
-        "charset": "UTF8"
+        "broker": "192.168.1.38",
+        "port": "1883",
+        "clientid": "",
+        "usetls": false,
+        "compatmode": false,
+        "keepalive": "60",
+        "cleansession": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthPayload": "",
+        "closeTopic": "",
+        "closeQos": "0",
+        "closePayload": "",
+        "willTopic": "",
+        "willQos": "0",
+        "willPayload": ""
     }
 ]
