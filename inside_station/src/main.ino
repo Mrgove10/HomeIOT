@@ -38,7 +38,7 @@ NTPClient timeClient(ntpUDP, "europe.pool.ntp.org", 3600, 60000);
 
 WiFiClient espClient;
 PubSubClient mqttClient(espClient);
-const char *mqttServerAdress = "test.mosquitto.org";
+const char *mqttServerAdress = "192.168.1.38";
 
 /**
  * startup loop, only runs once
@@ -106,6 +106,8 @@ void setup()
 	display.display();
 
 	//Mqtt
+
+	Serial.print("Connecting to MQTT");
 	mqttClient.setServer(mqttServerAdress, 1883);
 
 	// Attempt to connect to the server with the ID "myClientID"
