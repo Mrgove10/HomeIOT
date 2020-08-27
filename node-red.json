@@ -18,7 +18,7 @@
         "complete": "payload",
         "targetType": "msg",
         "x": 510,
-        "y": 240,
+        "y": 320,
         "wires": []
     },
     {
@@ -268,9 +268,9 @@
         "topic": "govie-weather-station-1344-out",
         "qos": "2",
         "datatype": "json",
-        "broker": "4902451c.f93f3c",
+        "broker": "d1b933cf.2c44f",
         "x": 270,
-        "y": 320,
+        "y": 280,
         "wires": [
             [
                 "a9fb2f45.f1e378",
@@ -290,7 +290,7 @@
         "overwriteFile": "true",
         "encoding": "none",
         "x": 500,
-        "y": 200,
+        "y": 240,
         "wires": [
             []
         ]
@@ -306,7 +306,7 @@
         "overwriteFile": "true",
         "encoding": "none",
         "x": 500,
-        "y": 360,
+        "y": 280,
         "wires": [
             []
         ]
@@ -741,15 +741,15 @@
         "z": "567e3fe2.08f88",
         "name": "My Timeout",
         "outtopic": "",
-        "outsafe": "Safe",
-        "outwarning": "Warning",
+        "outsafe": "",
+        "outwarning": "",
         "outunsafe": "Unsafe",
-        "warning": "0",
+        "warning": "",
         "timer": "250",
         "repeat": false,
         "again": false,
         "x": 510,
-        "y": 280,
+        "y": 360,
         "wires": [
             [
                 "41bdd4da.cc9314"
@@ -769,8 +769,8 @@
         "persist": false,
         "proxy": "",
         "authType": "",
-        "x": 740,
-        "y": 280,
+        "x": 720,
+        "y": 360,
         "wires": [
             []
         ]
@@ -784,28 +784,6 @@
         "port": "3306",
         "db": "Weather_Station",
         "tz": ""
-    },
-    {
-        "id": "4902451c.f93f3c",
-        "type": "mqtt-broker",
-        "z": "",
-        "name": "test.mosquitto.org",
-        "broker": "test.mosquitto.org",
-        "port": "1883",
-        "clientid": "",
-        "usetls": false,
-        "compatmode": false,
-        "keepalive": "60",
-        "cleansession": true,
-        "birthTopic": "",
-        "birthQos": "0",
-        "birthPayload": "",
-        "closeTopic": "",
-        "closeQos": "0",
-        "closePayload": "",
-        "willTopic": "",
-        "willQos": "0",
-        "willPayload": ""
     },
     {
         "id": "d1b933cf.2c44f",

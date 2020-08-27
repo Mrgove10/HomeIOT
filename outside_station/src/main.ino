@@ -14,7 +14,7 @@ float Celcius = 0;
 
 WiFiClient espClient;
 PubSubClient mqttClient(espClient);
-const char *mqttServerAdress = "test.mosquitto.org";
+const char *mqttServerAdress = "192.168.1.38";
 
 const char *ssid = "";
 const char *password = "";
