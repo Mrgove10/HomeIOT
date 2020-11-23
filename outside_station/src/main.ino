@@ -26,7 +26,7 @@ void setup(void)
 
   WiFi.begin(ssid, password);
   WiFi.mode(WIFI_STA);
-  WiFi.hostname("WeatherStation");
+  WiFi.hostname("WeatherStationOutside");
 
   Serial.print("Connecting to ");
   Serial.println(ssid);
@@ -91,9 +91,6 @@ void mqtt()
   // Define
   String payload = "{\"t_out\":" + String(Celcius, 2) + "}";
 
-  // This is needed at the top of the loop!
-  mqttClient.loop();
-
   //publish the message
   if (mqttClient.publish("govie-weather-station-1344-out", (char *)payload.c_str()))
   {
@@ -107,6 +104,8 @@ void mqtt()
 
 void loop(void)
 {
+  // This is needed at the top of the loop!
+  mqttClient.loop();
   sensors.requestTemperatures();
   Celcius = sensors.getTempCByIndex(0);
   Serial.println(Celcius);

@@ -50,7 +50,7 @@ void setup()
 	timeClient.begin();
 	WiFi.begin(ssid, password);
 	WiFi.mode(WIFI_STA);
-	WiFi.hostname("WeatherStation");
+	WiFi.hostname("WeatherStationInside");
 	bmeValid = bme.begin(0x76);
 
 	if (!bmeValid)
