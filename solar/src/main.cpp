@@ -4,6 +4,8 @@
 #include <ArduinoOTA.h>
 #include <Adafruit_GFX.h>
 #include <Adafruit_SSD1306.h>
+#include <OneWire.h>
+#include <DallasTemperature.h>
 
 // Voltage input pins
 #define SOLAR_VOLT_SENS 32
@@ -14,6 +16,12 @@
 #define SW1 33
 #define SW2 25
 #define SW3 26
+
+// temperatuer sensor
+#define ONE_WIRE_BUS 23
+
+OneWire oneWire(ONE_WIRE_BUS);
+DallasTemperature sensors(&oneWire);
 
 //boolean to say if we boot with screen on or off
 bool bootScreen = false;
@@ -38,7 +46,6 @@ long endMicros = 0;
 
 void setup_wifi()
 {
-
   delay(10);
   // We start by connecting to a WiFi network
   Serial.println();
@@ -58,6 +65,8 @@ void setup_wifi()
     delay(2000);
   }
 
+  int retries = 0;
+
   while (WiFi.status() != WL_CONNECTED)
   {
     delay(500);
@@ -65,6 +74,11 @@ void setup_wifi()
     {
       display.print(".");
       display.display();
+    }
+    retries++;
+    if (retries > 20)
+    {
+      ESP.restart();
     }
     Serial.print(".");
   }
@@ -75,7 +89,7 @@ void setup_wifi()
   Serial.println("WiFi connected");
   Serial.println("IP address: ");
   Serial.println(WiFi.localIP());
-  
+
   if (bootScreen == true)
   {
     display.clearDisplay();
@@ -122,6 +136,47 @@ void reconnect()
   }
 }
 
+void solarMQTTSend()
+{
+  //Getting Values
+  int solar = analogRead(SOLAR_VOLT_SENS);
+  int battery = analogRead(BAT_VOLT_SENS);
+  int five = analogRead(FIVE_VOLT_SENS);
+
+  Serial.print("Solar Voltage: ");
+  Serial.println(solar);
+  Serial.print("Battery Voltage: ");
+  Serial.println(battery);
+  Serial.print("5V Voltage: ");
+  Serial.println(five);
+  Serial.println("----");
+
+  // create json string
+  String JSON = "{\"solar\":" + String(solar) + ",\"battery\":" + String(battery) + ",\"five\":" + String(five) + "}";
+
+  // public string to the mqtt topic
+  Serial.println("publishing to mqtt");
+  client.publish("solar", (char *)JSON.c_str());
+}
+
+void tempMQTTSend()
+{
+  //Getting Values
+  sensors.begin();
+  sensors.requestTemperatures();
+  float Celcius = sensors.getTempCByIndex(0);
+
+  Serial.print("Celcius : ");
+  Serial.println(Celcius);
+
+  // create json string
+  String payload = "{\"t_out\":" + String(Celcius, 2) + "}";
+
+  // public string to the mqtt topic
+  Serial.println("publishing to mqtt");
+  client.publish("govie-weather-station-1344-out", (char *)payload.c_str());
+}
+
 void setup()
 {
   //get start time
@@ -145,7 +200,7 @@ void setup()
   Serial.println(digitalRead(SW3));
 
   // boot in screen mode if SW1 is on when boot
-  if (true)//digitalRead(SW1) == LOW)
+  if (true) //digitalRead(SW1) == LOW)
   {
     Serial.println("Booting with screen on");
     bootScreen = true;
@@ -245,25 +300,8 @@ void setup()
   client.loop();
   delay(100);
 
-  //Getting Values
-  int solar = analogRead(SOLAR_VOLT_SENS);
-  int battery = analogRead(BAT_VOLT_SENS);
-  int five = analogRead(FIVE_VOLT_SENS);
-
-  Serial.print("Solar Voltage: ");
-  Serial.println(solar);
-  Serial.print("Battery Voltage: ");
-  Serial.println(battery);
-  Serial.print("5V Voltage: ");
-  Serial.println(five);
-  Serial.println("----");
-
-  // create json string
-  String JSON = "{\"solar\":" + String(solar) + ",\"battery\":" + String(battery) + ",\"five\":" + String(five) + "}";
-
-  // public string to the mqtt topic
-  Serial.println("publishing to mqtt");
-  client.publish("solar", (char *)JSON.c_str());
+  solarMQTTSend();
+  tempMQTTSend();
 
   // disconnect before deep sleep
   client.disconnect();
@@ -283,17 +321,17 @@ void setup()
   Serial.println(sleepTime);
   // Serial.println(sleepTime / uS_TO_S_FACTOR);
 
-  if (bootScreen)
-  {
-    display.clearDisplay();
-    display.setTextColor(SSD1306_WHITE);
-    display.setCursor(0, 0);
-    display.println(solar);
-    display.println(battery);
-    display.println(five);
-    display.println(sleepTime);
-    display.display();
-  }
+  // if (bootScreen)
+  // {
+  //   display.clearDisplay();
+  //   display.setTextColor(SSD1306_WHITE);
+  //   display.setCursor(0, 0);
+  //   display.println(solar);
+  //   display.println(battery);
+  //   display.println(five);
+  //   display.println(sleepTime);
+  //   display.display();
+  // }
 
   // set time to sleep then go to sleep
   // sleepTime = 2500;
