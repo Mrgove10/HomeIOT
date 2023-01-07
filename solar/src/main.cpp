@@ -6,6 +6,12 @@
 #include <Adafruit_SSD1306.h>
 #include <OneWire.h>
 #include <DallasTemperature.h>
+#include <LaCrosse_TX23.h>
+
+// girouette
+// DATA wire connected to arduino port 10
+LaCrosse_TX23 anemometer = LaCrosse_TX23(10);
+String dirTable[] = {"N", "NNE", "NE", "ENE", "E", "ESE", "SE", "SSE", "S", "SSW", "SW", "WSW", "W", "WNW", "NW", "NNW"};
 
 // Voltage input pins
 #define SOLAR_VOLT_SENS 32
@@ -23,7 +29,7 @@
 OneWire oneWire(ONE_WIRE_BUS);
 DallasTemperature sensors(&oneWire);
 
-//boolean to say if we boot with screen on or off
+// boolean to say if we boot with screen on or off
 bool bootScreen = false;
 
 const char *mqtt_server = "192.168.1.38";
@@ -43,6 +49,9 @@ Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
 #define uS_TO_S_FACTOR 1000000 /* Conversion factor for micro seconds to seconds */
 long startMicros = 0;
 long endMicros = 0;
+
+const char *ssid = "coucou";
+const char *password = "fdsfs";
 
 void setup_wifi()
 {
@@ -138,7 +147,7 @@ void reconnect()
 
 void solarMQTTSend()
 {
-  //Getting Values
+  // Getting Values
   int solar = analogRead(SOLAR_VOLT_SENS);
   int battery = analogRead(BAT_VOLT_SENS);
   int five = analogRead(FIVE_VOLT_SENS);
@@ -161,7 +170,7 @@ void solarMQTTSend()
 
 void tempMQTTSend()
 {
-  //Getting Values
+  // Getting Values
   sensors.begin();
   sensors.requestTemperatures();
   float Celcius = sensors.getTempCByIndex(0);
@@ -177,9 +186,37 @@ void tempMQTTSend()
   client.publish("govie-weather-station-1344-out", (char *)payload.c_str());
 }
 
+void girouMQTTSend()
+{
+  float speed;
+  int direction;
+
+  while (!anemometer.read(speed, direction))
+  {
+    anemometer.read(speed, direction);
+  }
+
+  // if ()
+  // {
+  //   Serial.println("Speed = " + String(speed, 1) + " m/s");
+  //   Serial.println("Dir = " + dirTable[direction]);
+  // }
+  // else
+  // {
+  //   Serial.println("Read error");
+  // }
+
+  // create json string
+  String payload = "{\"g_speed\":" + String(speed, 2) + ",\"g_dir\":" + String(direction, 2) + ",\"g_dir_str\":" + dirTable[direction] + "}";
+
+  // public string to the mqtt topic
+  Serial.println("publishing to mqtt");
+  client.publish("girou", (char *)payload.c_str());
+}
+
 void setup()
 {
-  //get start time
+  // get start time
   startMicros = micros();
 
   // voltage pins
@@ -200,7 +237,7 @@ void setup()
   Serial.println(digitalRead(SW3));
 
   // boot in screen mode if SW1 is on when boot
-  if (true) //digitalRead(SW1) == LOW)
+  if (true) // digitalRead(SW1) == LOW)
   {
     Serial.println("Booting with screen on");
     bootScreen = true;
@@ -290,7 +327,7 @@ void setup()
   // DO NOT REMOVE THIS
   ArduinoOTA.handle();
 */
-  //MQTT
+  // MQTT
   if (!client.connected())
   {
     Serial.print(" : ");
@@ -307,7 +344,7 @@ void setup()
   client.disconnect();
   WiFi.disconnect();
 
-  //get end time
+  // get end time
   endMicros = micros();
 
   // get the total execution time
