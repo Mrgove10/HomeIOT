@@ -1,7 +1,5 @@
 {
     "files.associations": {
-        "functional": "cpp",
-        "system_error": "cpp",
-        "xtr1common": "cpp"
+        "*.tcc": "cpp"
     }
 }
