@@ -1,0 +1,52 @@
+esphome:
+  name: temp-sens-1
+  platform: ESP8266
+  board: esp_wroom_02
+
+<<: !include common.yaml
+
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+  power_save_mode: high
+  manual_ip:
+    static_ip: 192.168.1.25
+    gateway: 192.168.1.1
+    subnet: 255.255.255.0
+    dns1: 192.168.1.100
+
+i2c:
+  - id: bus_a
+    sda: 13
+    scl: 12
+
+# Note : Light can not be used as the same time as D0 reset
+# light:
+#   - platform: status_led
+#     name: "Switch state"
+#     pin: 16
+
+deep_sleep:
+  run_duration: 60s
+  sleep_duration: 45min
+
+sensor:
+  - platform: aht10
+    temperature:
+      name: "Temperature"
+      id: living_room_temperature
+    humidity:
+      name: "Humidity"
+      id: living_room_humidity
+    update_interval: 60s
+
+  - platform: adc
+    pin: A0
+    name: "Battery Level"
+    update_interval: 60s
+    filters:
+      - multiply: 100
+      - calibrate_linear:
+          # Map 0.0 (from sensor) to 0.0 (true value)
+          - 0.0 -> 0.0
+          - 1 -> 4.2
