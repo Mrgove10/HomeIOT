@@ -1,5 +1,7 @@
 # HomeIOT now fyully on home esp
 
+python3 -m esphome file.yml
+
 
 | Device Name | IP Address    |
 |-------------|---------------|

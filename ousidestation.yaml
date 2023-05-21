@@ -1,7 +1,7 @@
 esphome:
   name: outside
-  platform: ESP8266
-  board: d1_mini_lite
+  platform: ESP32
+  board: esp32doit-devkit-v1
 
 <<: !include common.yaml
 
@@ -15,12 +15,30 @@ wifi:
     subnet: 255.255.255.0
     dns1: 192.168.1.100
 
-uart:
-  rx_pin: D2
-  tx_pin: D4
-  baud_rate: 9600
+dallas:
+  - pin: GPIO23
 
 sensor:
-  - platform: pm1006
-    pm_2_5:
-      name: "pm2.5"
+  - platform: dallas
+    address: 0x010301a279737028
+    name: "Outside Temperature"
+  - platform: adc
+    pin: 34
+    name: "Battery Level"
+    update_interval: 60s
+    filters:
+      - multiply: 100
+      - calibrate_linear:
+          # Map 0.0 (from sensor) to 0.0 (true value)
+          - 0.0 -> 0.0
+          - 1 -> 4.2
+  - platform: adc
+    pin: 32
+    name: "Solar Level"
+    update_interval: 60s
+    filters:
+      - multiply: 100
+      - calibrate_linear:
+          # Map 0.0 (from sensor) to 0.0 (true value)
+          - 0.0 -> 0.0
+          - 1 -> 4.2
