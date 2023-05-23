@@ -28,7 +28,7 @@ i2c:
 
 deep_sleep:
   run_duration: 60s
-  sleep_duration: 45min
+  sleep_duration: 10min
 
 sensor:
   - platform: aht10
