@@ -16,11 +16,26 @@ wifi:
     dns1: 192.168.1.100
 
 uart:
-  rx_pin: D2
-  tx_pin: D4
+  rx_pin: D4
+  tx_pin: D5
   baud_rate: 9600
+
+i2c:
+  scl: D1
+  sda: D2
+  scan: true
+  id: bus_a
 
 sensor:
   - platform: pm1006
     pm_2_5:
       name: "pm2.5"
+
+  - platform: aht10
+    temperature:
+      name: "Temperature"
+      id: living_room_temperature
+    humidity:
+      name: "Humidity"
+      id: living_room_humidity
+    # update_interval: 60s
