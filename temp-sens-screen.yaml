@@ -16,9 +16,9 @@ wifi:
     dns1: 192.168.1.100
 
 font:
-  - file: "gfonts://Roboto"
+  - file: "gfonts://Roboto Mono"
     id: roboto
-    size: 20
+    size: 18
 
 i2c:
   - id: bus_a
@@ -49,6 +49,6 @@ display:
     lambda: |-
       //it.fill(COLOR_ON);
       it.printf(0, 0, id(roboto), "%.1f °C", id(bme280_temperature).state);
-      it.printf(0, 25, id(roboto), "%.1f %", id(bme280_humidity).state);
-      it.printf(0, 25, id(roboto), "%.1f hPa", id(bme280_pressure).state);
+      it.printf(0, 22, id(roboto), "%.1f hPa", id(bme280_pressure).state);
+      it.printf(0, 44, id(roboto), "%.1f p", id(bme280_humidity).state);
       // If the sensor has the value 30.02, the result will be: "The sensor value is: 30.0"
