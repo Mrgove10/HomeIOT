@@ -15,10 +15,15 @@ wifi:
     subnet: 255.255.255.0
     dns1: 192.168.1.100
 
+font:
+  - file: "gfonts://Roboto"
+    id: roboto
+    size: 20
+
 i2c:
   - id: bus_a
-    sda: D1
-    scl: D2
+    sda: D2
+    scl: D1
     scan: true
 
 sensor:
@@ -26,13 +31,15 @@ sensor:
     temperature:
       name: "BME280 Temperature"
       oversampling: 16x
+      id: bme280_temperature
     pressure:
       name: "BME280 Pressure"
+      id: bme280_pressure
     humidity:
       name: "BME280 Humidity"
-    address: 0x77
+      id: bme280_humidity
+    address: 0x76
     update_interval: 60s
-
 
 display:
   - platform: ssd1306_i2c
@@ -40,4 +47,8 @@ display:
     reset_pin: D0
     address: 0x3C
     lambda: |-
-      it.line(0, 0, 50, 50);
+      //it.fill(COLOR_ON);
+      it.printf(0, 0, id(roboto), "%.1f °C", id(bme280_temperature).state);
+      it.printf(0, 25, id(roboto), "%.1f %", id(bme280_humidity).state);
+      it.printf(0, 25, id(roboto), "%.1f hPa", id(bme280_pressure).state);
+      // If the sensor has the value 30.02, the result will be: "The sensor value is: 30.0"
