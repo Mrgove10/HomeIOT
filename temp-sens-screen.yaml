@@ -15,16 +15,16 @@ wifi:
     subnet: 255.255.255.0
     dns1: 192.168.1.100
 
-font:
-  - file: "gfonts://Roboto Mono"
-    id: roboto
-    size: 18
+# font:
+  # - file: "gfonts://Roboto Mono"
+  #   id: roboto
+  #   size: 18
 
 i2c:
-  - id: bus_a
-    sda: D2
-    scl: D1
-    scan: true
+  id: bus_a
+  sda: D2
+  scl: D1
+  scan: true
 
 sensor:
   - platform: bme280
@@ -41,14 +41,14 @@ sensor:
     address: 0x76
     update_interval: 60s
 
-display:
-  - platform: ssd1306_i2c
-    model: "SSD1306 128x64"
-    reset_pin: D0
-    address: 0x3C
-    lambda: |-
-      //it.fill(COLOR_ON);
-      it.printf(0, 0, id(roboto), "%.1f °C", id(bme280_temperature).state);
-      it.printf(0, 22, id(roboto), "%.1f hPa", id(bme280_pressure).state);
-      it.printf(0, 44, id(roboto), "%.1f p", id(bme280_humidity).state);
-      // If the sensor has the value 30.02, the result will be: "The sensor value is: 30.0"
+# display:
+#   - platform: ssd1306_i2c
+#     model: "SSD1306 128x64"
+#     reset_pin: D0
+#     address: 0x3C
+#     lambda: |-
+#       //it.fill(COLOR_ON);
+#       it.printf(0, 0, id(roboto), "%.1f °C", id(bme280_temperature).state);
+#       it.printf(0, 22, id(roboto), "%.1f hPa", id(bme280_pressure).state);
+#       it.printf(0, 44, id(roboto), "%.1f p", id(bme280_humidity).state);
+#       // If the sensor has the value 30.02, the result will be: "The sensor value is: 30.0"
